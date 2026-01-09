@@ -237,7 +237,7 @@ export default function ConfiguratorPage() {
         />
 
         <h3 style={{ marginTop: 18 }}>Deck Finish</h3>
-        <p style={{ color: 'var(--muted)', marginTop: 6, marginBottom: 8 }}>Clear finish required for 1" thickness.</p>
+        <p style={{ color: 'var(--muted)', marginTop: 6, marginBottom: 8 }}>Clear finish required for 1&quot; thickness.</p>
         <OptionGrid
           options={deckFinishes}
           mode="single"
