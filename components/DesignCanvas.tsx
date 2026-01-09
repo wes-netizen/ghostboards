@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 type Layer = {
   id: string;
@@ -90,7 +90,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
   }
 
   // redraw
-  function redraw() {
+  const redraw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -129,7 +129,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
       }
       ctx.restore();
     }
-  }
+  }, [layers, bgColor, selectedId]);
 
   // schedule export whenever layers/bg change
   useEffect(() => {
@@ -144,7 +144,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
       }
     }, 80);
     return () => clearTimeout(timeout);
-  }, [layers, bgColor]);
+  }, [layers, bgColor, onChange, redraw]);
 
   // hit testing: map point to layer local coords
   function pointToLayerLocal(px: number, py: number, layer: Layer) {
@@ -160,7 +160,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
     return { x: lx, y: ly };
   }
 
-  function hitTest(px: number, py: number) {
+  const hitTest = useCallback((px: number, py: number) => {
     for (let i = layers.length - 1; i >= 0; i--) {
       const l = layers[i];
       const local = pointToLayerLocal(px, py, l);
@@ -169,7 +169,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
       }
     }
     return null;
-  }
+  }, [layers]);
 
   // mouse / pointer events
   useEffect(() => {
@@ -221,7 +221,7 @@ export default function DesignCanvas({ width = 2048, height = 1024, onChange, in
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [layers, selectedId, dragging, mode]);
+  }, [layers, selectedId, dragging, mode, hitTest]);
 
   return (
     <div style={{ display: 'flex', gap: 12 }}>

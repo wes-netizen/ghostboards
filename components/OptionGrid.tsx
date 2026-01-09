@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
 export type Option = {
@@ -76,7 +77,6 @@ export default function OptionGrid({ options, mode, selected, onChange }: Props)
             key={o.id}
             role="option"
             aria-selected={isSelected}
-            aria-pressed={isSelected}
             aria-label={ariaLabel}
             onClick={() => toggle(o.id)}
             className={`optionCard ${isSelected ? 'optionCard--selected' : ''}`}
@@ -95,6 +95,7 @@ export default function OptionGrid({ options, mode, selected, onChange }: Props)
             }}
           >
             <div className="thumb" aria-hidden>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               {o.imageUrl ? (
                 <img src={o.imageUrl} alt="" className="thumbImg" />
               ) : (

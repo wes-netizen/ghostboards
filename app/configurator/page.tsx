@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react';
 import DeckViewer from '../../components/DeckViewer';
 import DesignCanvas from '../../components/DesignCanvas';
@@ -86,15 +87,18 @@ export default function ConfiguratorPage() {
   useEffect(() => {
     const msgs: string[] = [];
 
+    const currentShape = deckShapes.find((d) => d.id === selectedDeckShape[0]);
+    const dropThrough = currentShape?.dropThrough;
+
     // Drop-through decks limited to 3/4" thickness
-    if (selectedShape?.dropThrough && selectedDeckThickness[0] !== '3_4') {
+    if (dropThrough && selectedDeckThickness[0] !== '3_4') {
       setSelectedDeckThickness(['3_4']);
       setBuild((b) => ({ ...b, deckThicknessId: '3_4' }));
       msgs.push('Drop-through decks are limited to 3/4" thickness — switching thickness to 3/4".');
     }
 
     // Full LED not allowed on drop-through decks
-    if (selectedShape?.dropThrough && selectedFullLed[0] === 'led_yes') {
+    if (dropThrough && selectedFullLed[0] === 'led_yes') {
       setSelectedFullLed(['led_no']);
       setBuild((b) => ({ ...b, fullLedDeck: false }));
       msgs.push('Full LED deck is not compatible with Drop-through decks — disabled.');

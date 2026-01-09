@@ -463,7 +463,7 @@ export default function DeckViewer({ deckColor, ledColor, ledIntensity, deckLeng
         gl.deleteTexture((glStateRef.current as any).deckTexture);
       } catch (e) {}
     };
-  }, [deckLength, deckWidth, deckColor, ledColor, ledIntensity, truckColor, trucksEnabled, wheelColor, wheelsEnabled, fullLedEnabled, dropThrough]); // re-init when props change
+  }, [deckLength, deckWidth, deckColor, ledColor, ledIntensity, truckColor, trucksEnabled, wheelColor, wheelsEnabled, fullLedEnabled, dropThrough, deckTexture]); // re-init when props change
 
   // update GL texture when deckTexture prop changes
   useEffect(() => {
